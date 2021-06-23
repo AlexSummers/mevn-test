@@ -10,9 +10,9 @@ const ClientModel = mongoose.model('Client', new mongoose.Schema({
   phone: {
     type: String,
   },
-  providerIds: {
-    type: Array,
-  },
+  providerIds: [
+    { type: mongoose.Types.ObjectId, ref: 'ProviderModel' },
+  ],
 }, { timestamps: true }));
 
 module.exports = ClientModel;

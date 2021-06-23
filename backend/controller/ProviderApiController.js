@@ -1,4 +1,5 @@
 const ProviderRepository = require('../respository/ProviderRepository');
+const ClientRepository = require('../respository/ClientRepository');
 
 exports.create = async (req, res) => {
   try {
@@ -29,6 +30,7 @@ exports.delete = async (req, res) => {
   try {
     const { id: providerId } = req.body;
     await ProviderRepository.deleteById(providerId);
+    await ClientRepository.deleteProviderIdFromAll(providerId);
     res.json({});
   } catch (error) {
     console.error(error);
