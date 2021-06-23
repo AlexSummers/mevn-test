@@ -15,7 +15,133 @@ const validate = (validations) => async (req, res, next) => {
 
 const app = express.Router();
 
+/**
+ * @swagger
+ * /api/clients/list:
+ *   get:
+ *     summary: Retrieve a list of clients.
+ *     description: Retrieve a list of clients at providers in JSON format.
+ *     tags:
+ *       - clients
+ *     responses:
+ *       200:
+ *         description: A list of clients and providers.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 clients:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: The client ID.
+ *                         example: 60d21721475c6b0018f07831
+ *                       name:
+ *                         type: string
+ *                         description: The clients's name.
+ *                         example: Donald Trump
+ *                       email:
+ *                         type: string
+ *                         description: The clients's email.
+ *                         example: trump@dc.com
+ *                       phone:
+ *                         type: string
+ *                         description: The clients's phone.
+ *                         example: 5553535
+ *                       providerIds:
+ *                         type: array
+ *                         description: Id's list of connected providers.
+ *                         items:
+ *                           type: string
+ *                           description: The provider's id.
+ *                           example: 60d21602475c6b0018f0782d
+ *                 providers:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: The provider's ID.
+ *                         example: 60d21602475c6b0018f0782d
+ *                       name:
+ *                         type: string
+ *                         description: The provider's name.
+ *                         example: Provider 1
+ */
 app.get('/clients/list', clientApiController.list);
+/**
+ * @swagger
+ * /api/clients/create:
+ *   post:
+ *     summary: Creating a new client.
+ *     tags:
+ *       - clients
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 required: true
+ *                 description: The clients's name.
+ *                 example: Barak Obama
+ *               email:
+ *                 type: string
+ *                 required: true
+ *                 description: The clients's email.
+ *                 example: obama@dc.com
+ *               phone:
+ *                 type: string
+ *                 required: true
+ *                 description: The clients's phone.
+ *                 example: 5557676
+ *               providerIds:
+ *                 type: array
+ *                 description: Id's list of connected providers.
+ *                 items:
+ *                   type: string
+ *                   description: The provider's id.
+ *                   example: 60d21602475c6b0018f0782d
+ *     responses:
+ *       200:
+ *         description: Created client.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: The client ID.
+ *                   example: 60d21721475c6b0018f07831
+ *                 name:
+ *                   type: string
+ *                   description: The clients's name.
+ *                   example: Donald Trump
+ *                 email:
+ *                   type: string
+ *                   description: The clients's email.
+ *                   example: trump@dc.com
+ *                 phone:
+ *                   type: string
+ *                   description: The clients's phone.
+ *                   example: 5553535
+ *                 providerIds:
+ *                   type: array
+ *                   description: Id's list of connected providers.
+ *                   items:
+ *                     type: string
+ *                     description: The provider's id.
+ *                     example: 60d21602475c6b0018f0782d
+ */
 app.post(
   '/clients/create',
   validate([
@@ -26,6 +152,32 @@ app.post(
   ]),
   clientApiController.create,
 );
+/**
+ * @swagger
+ * /api/clients/delete:
+ *   post:
+ *     summary: Removing a client.
+ *     tags:
+ *       - clients
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 required: true
+ *                 description: The clients's ID.
+ *                 example: 60d21721475c6b0018f07831
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ */
 app.post(
   '/clients/delete',
   validate([
@@ -33,6 +185,83 @@ app.post(
   ]),
   clientApiController.delete,
 );
+/**
+ * @swagger
+ * /api/clients/edit:
+ *   post:
+ *     summary: Editing a existed client.
+ *     tags:
+ *       - clients
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 required: true
+ *                 description: The clients's ID.
+ *                 example: 60d21721475c6b0018f07831
+ *               name:
+ *                 type: string
+ *                 required: true
+ *                 description: The clients's name.
+ *                 example: Barak Obama
+ *               email:
+ *                 type: string
+ *                 required: true
+ *                 description: The clients's email.
+ *                 example: obama@dc.com
+ *               phone:
+ *                 type: string
+ *                 required: true
+ *                 description: The clients's phone.
+ *                 example: 5557676
+ *               providerIds:
+ *                 type: array
+ *                 description: Id's list of connected providers.
+ *                 items:
+ *                   type: string
+ *                   description: The provider's id.
+ *                   example: 60d21602475c6b0018f0782d
+ *     responses:
+ *       200:
+ *         description: Updated client.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   required: true
+ *                   description: The clients's ID.
+ *                   example: 60d21721475c6b0018f07831
+ *                 name:
+ *                   type: string
+ *                   required: true
+ *                   description: The clients's name.
+ *                   example: Barak Obama
+ *                 email:
+ *                   type: string
+ *                   required: true
+ *                   description: The clients's email.
+ *                   example: obama@dc.com
+ *                 phone:
+ *                   type: string
+ *                   required: true
+ *                   description: The clients's phone.
+ *                   example: 5557676
+ *                 providerIds:
+ *                   type: array
+ *                   description: Id's list of connected providers.
+ *                   items:
+ *                     type: string
+ *                     description: The provider's id.
+ *                     example: 60d21602475c6b0018f0782d
+ */
 app.post(
   '/clients/edit',
   validate([
@@ -44,7 +273,42 @@ app.post(
   ]),
   clientApiController.edit,
 );
-
+/**
+ * @swagger
+ * /api/providers/create:
+ *   post:
+ *     summary: Creating a new provider.
+ *     tags:
+ *       - providers
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 required: true
+ *                 description: The provider's name.
+ *                 example: Provider 1
+ *     responses:
+ *       200:
+ *         description: Created provider.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: The provider's ID.
+ *                   example: 60d21602475c6b0018f0782d
+ *                 name:
+ *                   type: string
+ *                   description: The provider's name.
+ *                   example: Provider 1
+ */
 app.post(
   '/providers/create',
   validate([
@@ -52,6 +316,32 @@ app.post(
   ]),
   providerApiController.create,
 );
+/**
+ * @swagger
+ * /api/providers/delete:
+ *   post:
+ *     summary: Removing a provider.
+ *     tags:
+ *       - providers
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 required: true
+ *                 description: The provider's ID.
+ *                 example: 60d21602475c6b0018f0782d
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ */
 app.post(
   '/providers/delete',
   validate([
@@ -59,6 +349,47 @@ app.post(
   ]),
   providerApiController.delete,
 );
+/**
+ * @swagger
+ * /api/providers/edit:
+ *   post:
+ *     summary: Editing a existed provider.
+ *     tags:
+ *       - providers
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 required: true
+ *                 description: The provider's ID.
+ *                 example: 60d21602475c6b0018f0782d
+ *               name:
+ *                 type: string
+ *                 required: true
+ *                 description: The provider's name.
+ *                 example: Provider 1
+ *     responses:
+ *       200:
+ *         description: Updated provider.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: The provider's ID.
+ *                   example: 60d21602475c6b0018f0782d
+ *                 name:
+ *                   type: string
+ *                   description: The provider's name.
+ *                   example: Provider 1
+ */
 app.post(
   '/providers/edit',
   validate([

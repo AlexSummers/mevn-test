@@ -4,7 +4,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const mainConfig = require('./config/MainConfig');
 const apiRoutes = require('./route/apiRoutes');
 
@@ -15,6 +17,20 @@ mongoose.connect(mainConfig.DB, {
   useUnifiedTopology: true,
   useFindAndModify: false,
 });
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'MEVN API doc',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./route/apiRoutes.js'], // files containing annotations as above
+};
+
+const swaggerSpecification = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
 
 app.use(cors());
 app.use(logger('dev'));

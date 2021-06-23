@@ -3,26 +3,20 @@
     dense
     nav
   >
-    <VListItemGroup
-      v-model="activeMenuItemIndex"
-      mandatory
+    <VListItem
+      v-for="(menuItem, menuItemIndex) in menuItems"
+      :key="menuItem.title"
+      :input-value="activeMenuItemIndex === menuItemIndex"
       color="indigo"
+      @click="menuItemClickHandler(menuItem)"
     >
-      <VListItem
-        v-for="(menuItem, menuItemIndex) in menuItems"
-        :key="menuItem.title"
-        :name="menuItem.routeName"
-        link
-        @click="menuItemClickHandler(menuItem, menuItemIndex)"
-      >
-        <VListItemIcon>
-          <VIcon>{{ menuItem.icon }}</VIcon>
-        </VListItemIcon>
-        <VListItemContent>
-          <VListItemTitle>{{ menuItem.title }}</VListItemTitle>
-        </VListItemContent>
-      </VListItem>
-    </VListItemGroup>
+      <VListItemIcon>
+        <VIcon>{{ menuItem.icon }}</VIcon>
+      </VListItemIcon>
+      <VListItemContent>
+        <VListItemTitle>{{ menuItem.title }}</VListItemTitle>
+      </VListItemContent>
+    </VListItem>
   </VList>
 </template>
 <script>
@@ -31,7 +25,6 @@ import routeNames from '../routes/routeNames';
 export default {
   data() {
     return {
-      activeMenuItemIndex: 0,
       menuItems: [
         {
           title: 'Home Page',
@@ -43,26 +36,31 @@ export default {
           routeName: routeNames.clientsPage,
           icon: 'mdi-account-multiple',
         },
+        {
+          title: 'API docs',
+          routeName: 'ApiDocs',
+          icon: 'mdi-book',
+          url: 'http://localhost/api-docs',
+        },
       ],
     };
   },
-  created() {
-    this.setActiveMenuItemIndex();
-  },
-  methods: {
-    setActiveMenuItemIndex() {
-      const activeMenuItemIndex = this.menuItems.findIndex(
+  computed: {
+    activeMenuItemIndex() {
+      return this.menuItems.findIndex(
         (menuItem) => menuItem.routeName === this.$route.name,
       );
-      if (activeMenuItemIndex !== -1) {
-        this.activeMenuItemIndex = activeMenuItemIndex;
-      }
     },
-    menuItemClickHandler(menuItem, menuItemIndex) {
+  },
+  methods: {
+    menuItemClickHandler(menuItem) {
+      if (Object.keys(menuItem).indexOf('url') !== -1) {
+        window.open(menuItem.url, '_blank');
+        return;
+      }
       if (this.$route.name === menuItem.routeName) {
         return;
       }
-      this.activeMenuItemIndex = menuItemIndex;
       this.$router.push({ name: menuItem.routeName });
     },
   },

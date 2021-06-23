@@ -7,7 +7,10 @@
       justify="center"
       align="center"
     >
-      <VCol cols="12" sm="4">
+      <VCol
+        cols="12"
+        sm="4"
+      >
         <VCard class="elevation-0">
           <VCardTitle class="justify-center">
             Welcome to Home Page
