@@ -5,6 +5,7 @@
         :headers="headers"
         :items="clients"
         :loading="loadClientsInProgress"
+        :search="searchQuery"
         loading-text="Loading... Please wait"
         sort-by="name"
         class="elevation-1"
@@ -16,6 +17,13 @@
               class="mx-4"
               inset
               vertical
+            />
+            <VTextField
+              v-model="searchQuery"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
             />
             <VSpacer />
             <FormClient
@@ -101,11 +109,22 @@ export default {
         },
         { text: 'Email', value: 'email' },
         { text: 'Phone', value: 'phone' },
-        { text: 'Providers', value: 'providerNames', sortable: false },
-        { text: 'Actions', value: 'actions', sortable: false },
+        {
+          text: 'Providers',
+          value: 'providerNames',
+          sortable: false,
+          filterable: false,
+        },
+        {
+          text: 'Actions',
+          value: 'actions',
+          sortable: false,
+          filterable: false,
+        },
       ],
       clients: [],
       providers: [],
+      searchQuery: '',
       loadClientsInProgress: false,
       editedClientIndex: -1,
       editedClient: {
